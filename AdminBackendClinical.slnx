@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="AdminBackendClinical/AdminBackendClinical.csproj" />
+  <Project Path="DatabaseLayer/DatabaseLayer.csproj" />
+  <Project Path="Domain/DomainLayer.csproj" />
+  <Project Path="ServiceLayer/ServiceLayer.csproj" />
+</Solution>
