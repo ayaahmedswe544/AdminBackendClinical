@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Domain.Models
+namespace DomainLayer.Models
 {
     public class VitalSign:BaseModule
     {

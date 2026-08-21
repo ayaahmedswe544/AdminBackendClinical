@@ -1,5 +1,5 @@
 ﻿
-namespace Domain.Models;
+namespace DomainLayer.Models;
 public class VitalSignMaster : BaseModule
 {
     public string Name { get; set; }

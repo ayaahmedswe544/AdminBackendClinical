@@ -1,5 +1,5 @@
 ﻿using DatabaseLayer.Models;
-using Domain.Models;
+using DomainLayer.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;

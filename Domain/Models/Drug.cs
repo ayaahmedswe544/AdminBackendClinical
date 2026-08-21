@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace Domain.Models
+namespace DomainLayer.Models
 {
     public class Drug : BaseModule
     {

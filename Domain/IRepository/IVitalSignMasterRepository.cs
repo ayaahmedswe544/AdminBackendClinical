@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DomainLayer.IRepository
 {
-    public interface IVitalSignMasterRepository: IBaseRepository<Domain.Models.VitalSignMaster>
+    public interface IVitalSignMasterRepository: IBaseRepository<DomainLayer.Models.VitalSignMaster>
     {
       
         

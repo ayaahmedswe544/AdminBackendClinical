@@ -1,5 +1,11 @@
+using DatabaseLayer;
+using Domain.IRepository;
 using Microsoft.EntityFrameworkCore;
-
+using DomainLayer;
+using DomainLayer.IRepository;
+using DatabaseLayer.Repository;
+using ServiceLayer;
+using ServiceLayer.ApplicationUser;
 namespace AdminBackendClinical
 {
     public class Program
@@ -11,8 +17,14 @@ namespace AdminBackendClinical
             builder.Services.AddDbContext<DatabaseLayer.AppDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            builder.Services.AddIdentity<Domain.Models.ApplicationUser, Microsoft.AspNetCore.Identity.IdentityRole>()
+            builder.Services.AddIdentity<DomainLayer.Models.ApplicationUser, Microsoft.AspNetCore.Identity.IdentityRole>()
                 .AddEntityFrameworkStores<DatabaseLayer.AppDbContext>();
+
+            builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+            builder.Services.AddScoped<IVitalSignMasterRepository,VitalSignMasterRepository>();
+            builder.Services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<IApplicationUserService, ApplicationUserService>();
                 
 
             // Add services to the container.

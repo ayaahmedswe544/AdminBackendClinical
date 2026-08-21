@@ -1,0 +1,15 @@
+﻿@using ServiceLayer;
+@using ServiceLayer.ApplicationUser.DTOs
+@model LoginDto
+
+<form asp-action="index" method="post">
+
+    <label asp-for="UserName">Username</label>
+    <input asp-for="UserName" />
+
+    <label asp-for="Password">password</label>
+    <input asp-for="Password" />
+    <input type="submit" title="login"/>
+    
+    <div asp-validation-summary="All"></div>
+</form>

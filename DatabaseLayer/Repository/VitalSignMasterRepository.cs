@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DatabaseLayer.Repository
 {
-    public class VitalSignMasterRepository : BaseRepository<Domain.Models.VitalSignMaster>, DomainLayer.IRepository.IVitalSignMasterRepository
+    public class VitalSignMasterRepository : BaseRepository<DomainLayer.Models.VitalSignMaster>, DomainLayer.IRepository.IVitalSignMasterRepository
     {
         public VitalSignMasterRepository(AppDbContext context) : base(context)
         {

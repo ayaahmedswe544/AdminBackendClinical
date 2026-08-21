@@ -1,4 +1,4 @@
-﻿using Domain.Models;
+﻿using DomainLayer.Models;
 using Microsoft.AspNetCore.Identity;
 using Domain.Response;
 using Domain.IRepository;
@@ -17,5 +17,6 @@ public interface IApplicationUserRepository : IBaseRepository<ApplicationUser>
     public Task<bool> CheckPasswordAsync(ApplicationUser user, string password);
     public Task<ApplicationUser> GetUserIdAsync(string userId);
     public Task<Doctor> GetDoctorbyUserIdAsync(string userId);
+    public Task<GeneralResponse<ApplicationUser>> LogInAsync(ApplicationUser user, string password);
 
 }

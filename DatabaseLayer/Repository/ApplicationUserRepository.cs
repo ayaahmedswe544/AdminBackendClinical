@@ -1,5 +1,7 @@
-﻿using Domain.Models;
+﻿
 using Domain.Response;
+using DomainLayer.IRepository;
+using DomainLayer.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using System;
@@ -8,15 +10,17 @@ using System.Text;
 
 namespace DatabaseLayer.Repository
 {
-    public class ApplicationUserRepository : BaseRepository<Domain.Models.ApplicationUser>, DomainLayer.IRepository.IApplicationUserRepository
+    public class ApplicationUserRepository : BaseRepository<DomainLayer.Models.ApplicationUser>, IApplicationUserRepository
     {
         private readonly AppDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        public ApplicationUserRepository(AppDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager) : base(context)
+        public ApplicationUserRepository(AppDbContext context, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager) : base(context)
         {
             _context = context;
             _userManager = userManager;
+            _signInManager = signInManager;
             _roleManager = roleManager;
         }
         public async Task<bool> AddRoleAsync(string userId, string roleName)
@@ -91,6 +95,42 @@ namespace DatabaseLayer.Repository
                 }
                 return identityRoles;
             });
+        }
+
+        public async Task<GeneralResponse<ApplicationUser>> LogInAsync(ApplicationUser user, string password)
+        {
+            try
+            {
+                var result = await _signInManager.PasswordSignInAsync(user, password, isPersistent: false, lockoutOnFailure: false);
+                if (result.Succeeded)
+                {
+                    return new GeneralResponse<ApplicationUser>
+                    {
+                        Success = true,
+                        Data = user,
+                        Message = "User logged in successfully."
+                    };
+                }
+                else
+                {
+                    return new GeneralResponse<ApplicationUser>
+                    {
+                        Success = false,
+                        Data = null,
+                        Message = "Invalid login attempt."
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new GeneralResponse<ApplicationUser>
+                {
+                    Success = false,
+                    Data = null,
+                    Message = $"An error occurred during login: {ex.Message}"
+                };
+            }
+
         }
 
         public async Task<ApplicationUser> UpdateAsync(ApplicationUser user)

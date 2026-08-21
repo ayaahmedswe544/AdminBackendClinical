@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Domain.Models;
+namespace DomainLayer.Models;
 public class DiagnosMaster : BaseModule
 {
     [Required]
