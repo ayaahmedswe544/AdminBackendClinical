@@ -12,39 +12,62 @@ namespace ServiceLayer.VitalSignMaster
 {
     public class VitalSignMasterService:IVitalSignMasterService
     {
-        private readonly IVitalSignMasterRepository _MasterRepo;
-        private readonly IVitalSignRepo _SignRepo;
+
         private readonly IUnitOfWork _Unit;
-        public VitalSignMasterService(IVitalSignMasterRepository masterRepo, IVitalSignRepo signRepo,IUnitOfWork unit)
+        public VitalSignMasterService(IUnitOfWork unit)
         {
-            _MasterRepo = masterRepo;
-            _SignRepo = signRepo;
+
             _Unit = unit;
         }
 
-        public async Task<GeneralResponse<IEnumerable<VitalSignMasterDto>>> GetVitalSignMastersAsync()
+        public async Task<GeneralResponse<IEnumerable<VitalSignMasterWithVitalSignsDto>>> GetVitalSignMastersAsync()
         {
-            var VitalSignMasters = _MasterRepo.GetAll();
+            var VitalSignMasters = await _Unit.VitalSignMasterRepository.GetAllAsync();
             var VitalSignMastersDto = VitalSignMasters.Select(vm => new VitalSignMasterDto()
             {
                 ID=vm.Id,
                 Name=vm.Name
                 
             });
-            if (VitalSignMasters == null)
+            List<VitalSignMasterWithVitalSignsDto> VitalSignMastersWithVitalSignsDto = new List<VitalSignMasterWithVitalSignsDto>();
+
+           foreach(var vm in VitalSignMastersDto)
             {
-                return new GeneralResponse<IEnumerable<VitalSignMasterDto>>()
+                var VitalSigns = await _Unit.VitalSignRepo.GetVitalSignsByVitalSignMasterId(vm.ID);
+                if (VitalSigns.Success == false)
                 {
-                    Success = false,
-                    Message = "There is no Vital sign masters"
+                    return new GeneralResponse<IEnumerable<VitalSignMasterWithVitalSignsDto>>()
+                    {
+                        Success = false,
+                        Message = "Failed to retrieve vital signs for Vital Sign Master ID: " + vm.ID
+                    };
+                }
+                var vitalsignsdto = VitalSigns.Data.Select(v => new VitalSignDto()
+                {
+                    ID = v.Id,
+                    name = v.name,
+                    dataTypeName = v.dataTypeName,
+                    description = v.description,
+                    listValues = v.listValues,
+                    maxValue = v.maxValue,
+                    minValue = v.minValue,
+                    VitalSignMasterId = vm.ID,
+                }).ToList();
+                var dto = new VitalSignMasterWithVitalSignsDto()
+                {
+                    ID = vm.ID,
+                    Name = vm.Name,
+                    VitalSigns = vitalsignsdto
                 };
+                VitalSignMastersWithVitalSignsDto.Add(dto);
             }
-            return new GeneralResponse<IEnumerable<VitalSignMasterDto>>()
+            return new GeneralResponse<IEnumerable<VitalSignMasterWithVitalSignsDto>>()
             {
                 Success = true,
-                Message = "Vital sign masters are retrieved successfuly",
-                Data=VitalSignMastersDto
+                Message = "Vital Sign Masters with Vital Signs retrieved successfully",
+                Data = VitalSignMastersWithVitalSignsDto
             };
+
 
         }
 
@@ -59,7 +82,7 @@ namespace ServiceLayer.VitalSignMaster
 
                 };
             }
-            var VitalSigns = await _SignRepo.GetVitalSignsByVitalSignMasterId(VitalSignMasterID);
+            var VitalSigns = await _Unit.VitalSignRepo.GetVitalSignsByVitalSignMasterId(VitalSignMasterID);
             if(VitalSigns.Success==false)
             {
                 return new GeneralResponse<VitalSignMasterWithVitalSignsDto>()
@@ -69,9 +92,10 @@ namespace ServiceLayer.VitalSignMaster
 
                 };
             }
-            var VitalSignMaster = await _MasterRepo.FindAsync(v => v.Id == VitalSignMasterID);
+            var VitalSignMaster = await _Unit.VitalSignMasterRepository.FindAsync(v => v.Id == VitalSignMasterID);
             var vitalsignsdto=VitalSigns.Data.Select(v => new VitalSignDto()
             {
+                ID = v.Id,
                 name = v.name,
                 dataTypeName = v.dataTypeName,
                 description = v.description,
@@ -82,6 +106,7 @@ namespace ServiceLayer.VitalSignMaster
             }).ToList();
             var dto = new VitalSignMasterWithVitalSignsDto()
             {
+                ID = VitalSignMaster.Id,
                 Name = VitalSignMaster.Name,
                 VitalSigns = vitalsignsdto
             };

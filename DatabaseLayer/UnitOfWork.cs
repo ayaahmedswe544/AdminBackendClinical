@@ -11,11 +11,13 @@ namespace DatabaseLayer
         private readonly AppDbContext _context;
         public IVitalSignMasterRepository VitalSignMasterRepository { get; private set; }
         public IApplicationUserRepository ApplicationUserRepository { get; private set; }
-        public UnitOfWork(AppDbContext context,IVitalSignMasterRepository vitalSignMasterRepository, IApplicationUserRepository applicationUserRepository)
+        public IVitalSignRepo VitalSignRepo { get; private set; }
+        public UnitOfWork(AppDbContext context,IVitalSignMasterRepository vitalSignMasterRepository, IApplicationUserRepository applicationUserRepository, IVitalSignRepo vitalSignRepository)
         {
             _context = context;
             VitalSignMasterRepository = vitalSignMasterRepository;
             ApplicationUserRepository = applicationUserRepository;
+            VitalSignRepo = vitalSignRepository;
         }
         public async Task<int> SaveChangesAsync()
         {

@@ -16,7 +16,7 @@ namespace DatabaseLayer.Repository
 
         public async Task<GeneralResponse<IEnumerable<VitalSign>>> GetVitalSignsByVitalSignMasterId(Guid vitalSignMasterId)
         {
-            var exist = await _context.vitalSigns.FindAsync(vitalSignMasterId);
+            var exist = await _context.vitalSignMasters.FindAsync(vitalSignMasterId);
             if (exist == null) {
 
 

@@ -11,6 +11,6 @@ namespace ServiceLayer.VitalSignMaster
     public interface IVitalSignMasterService
     {
         Task<GeneralResponse<VitalSignMasterWithVitalSignsDto>> GetVitalSignMasterWithVitalSigns(Guid VitalSignMasterID);
-        Task<GeneralResponse<IEnumerable<VitalSignMasterDto>>> GetVitalSignMastersAsync();
+        Task<GeneralResponse<IEnumerable<VitalSignMasterWithVitalSignsDto>>> GetVitalSignMastersAsync();
     }
 }

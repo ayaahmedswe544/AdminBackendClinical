@@ -19,6 +19,7 @@ namespace AdminBackendClinical.Controllers
             var data = response.Data;   
                 return View(data);
             }
+            Console.WriteLine(response.Message);
             return RedirectToAction(nameof(Index));
         }
     }
