@@ -25,6 +25,7 @@ namespace AdminBackendClinical
             builder.Services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IApplicationUserService, ApplicationUserService>();
+            builder.Services.AddScoped<IVitalSignRepo,VitalSignRepo>();
                 
 
             // Add services to the container.

@@ -7,7 +7,8 @@ namespace DomainLayer.IRepository
 {
     public interface IVitalSignMasterRepository: IBaseRepository<DomainLayer.Models.VitalSignMaster>
     {
-      
-        
+
+    
+
     }
 }

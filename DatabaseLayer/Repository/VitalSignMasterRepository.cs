@@ -9,5 +9,6 @@ namespace DatabaseLayer.Repository
         public VitalSignMasterRepository(AppDbContext context) : base(context)
         {
         }
+
     }
 }
