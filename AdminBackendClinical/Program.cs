@@ -6,6 +6,8 @@ using DomainLayer.IRepository;
 using DatabaseLayer.Repository;
 using ServiceLayer;
 using ServiceLayer.ApplicationUser;
+using ServiceLayer.VitalSignMaster;
+using ServiceLayer.VitalSign;
 namespace AdminBackendClinical
 {
     public class Program
@@ -26,6 +28,7 @@ namespace AdminBackendClinical
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IApplicationUserService, ApplicationUserService>();
             builder.Services.AddScoped<IVitalSignRepo,VitalSignRepo>();
+            builder.Services.AddScoped<IVitalSignMasterService, VitalSignMasterService>();
                 
 
             // Add services to the container.

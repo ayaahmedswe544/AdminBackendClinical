@@ -6,6 +6,7 @@ namespace ServiceLayer.VitalSignMaster.DTOs
 {
     public class VitalSignMasterDto
     {
+        public Guid ID { get; set; }
         public string Name { get; set; }
     }
 }

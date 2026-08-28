@@ -1,6 +1,7 @@
 ﻿using Domain.Response;
 using DomainLayer;
 using DomainLayer.IRepository;
+using DomainLayer.Models;
 using ServiceLayer.VitalSign.DTOs;
 using ServiceLayer.VitalSignMaster.DTOs;
 using System;
@@ -19,6 +20,32 @@ namespace ServiceLayer.VitalSignMaster
             _MasterRepo = masterRepo;
             _SignRepo = signRepo;
             _Unit = unit;
+        }
+
+        public async Task<GeneralResponse<IEnumerable<VitalSignMasterDto>>> GetVitalSignMastersAsync()
+        {
+            var VitalSignMasters = _MasterRepo.GetAll();
+            var VitalSignMastersDto = VitalSignMasters.Select(vm => new VitalSignMasterDto()
+            {
+                ID=vm.Id,
+                Name=vm.Name
+                
+            });
+            if (VitalSignMasters == null)
+            {
+                return new GeneralResponse<IEnumerable<VitalSignMasterDto>>()
+                {
+                    Success = false,
+                    Message = "There is no Vital sign masters"
+                };
+            }
+            return new GeneralResponse<IEnumerable<VitalSignMasterDto>>()
+            {
+                Success = true,
+                Message = "Vital sign masters are retrieved successfuly",
+                Data=VitalSignMastersDto
+            };
+
         }
 
         public async Task<GeneralResponse<VitalSignMasterWithVitalSignsDto>> GetVitalSignMasterWithVitalSigns(Guid VitalSignMasterID)

@@ -1,0 +1,88 @@
+﻿@using ServiceLayer.VitalSignMaster.DTOs
+@model IEnumerable<VitalSignMasterDto>
+
+@{
+    ViewData["Title"] = "Vital Signs";
+}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Vital Signs</h2>
+
+        <a asp-action="Create" class="btn btn-primary">
+            Add Vital Sign
+        </a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    int index = 1;
+
+                    foreach (var vitalSign in Model)
+                    {
+                        <tr>
+                            <td>@index</td>
+
+                            <td>
+                                @vitalSign.Name
+                            </td>
+
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <a asp-action="Edit"
+                                       asp-route-id="@vitalSign.ID"
+                                       class="btn btn-sm btn-warning">
+                                        Edit
+                                    </a>
+                                    <form asp-action="Delete"
+                                          asp-route-id="@vitalSign.ID"
+                                          method="post"
+                                          onsubmit="return confirm('Are you sure you want to delete this vital sign?');">
+
+                                        <button type="submit"
+                                                class="btn btn-sm btn-danger">
+                                            Delete
+                                        </button>
+
+                                    </form>
+                                    <a asp-action="Details"
+                                       asp-route-id="@vitalSign.ID"
+                                       class="btn btn-sm btn-info">
+                                        Show Vital Signs
+                                    </a>
+
+                                </div>
+                            </td>
+                        </tr>
+
+                        index++;
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="3" class="text-center">
+                            No vital signs found.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
+
+</div>
+
